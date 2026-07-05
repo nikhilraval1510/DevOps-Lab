@@ -1,6 +1,5 @@
 # Log Archive Tool
 
-**Project URL:** [Insert your GitHub Repository URL here]
 
 A robust command-line tool built in Bash that archives and compresses log directories into timestamped `.tar.gz` files. It automatically logs each archiving operation for easy auditing and system maintenance.
 
