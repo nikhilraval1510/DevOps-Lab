@@ -16,5 +16,3 @@ A bash script to analyse basic server performance stats.
     ```
     ./server-stats.sh
     ```
-```
-https://roadmap.sh/projects/server-stats
