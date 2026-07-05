@@ -19,7 +19,7 @@ If you are a completely new user, follow these exact steps to download, configur
 ### Step 1: Download the Project
 Open your terminal and clone the repository to your local machine using Git:
 ```bash
-git clone [https://github.com/nikhilraval1510/DevOps-Lab.git](https://github.com/nikhilraval1510/DevOps-Lab.git)
+git clone https://github.com/nikhilraval1510/DevOps-Lab.git
 ```
 
 ### Step 2: Navigate to the Folder
