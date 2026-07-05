@@ -1,79 +1,93 @@
 # Log Archive Tool
 
-A Bash script that compresses a directory of logs into a timestamped `.tar.gz` archive and records each operation to an audit log.
+**Project URL:** [Insert your GitHub Repository URL here]
 
-## Requirements
+A robust command-line tool built in Bash that archives and compresses log directories into timestamped `.tar.gz` files. It automatically logs each archiving operation for easy auditing and system maintenance.
 
-- Linux or macOS
-- `bash`, `tar`
-- Write access to the current working directory
+## Features
 
-## Installation
+*   **Automated Compression:** Packages entire log directories (like `/var/log`) into space-saving `tar.gz` archives.
+*   **Timestamping:** Appends precise date and time to both the archive filename and the audit log.
+*   **Audit Logging:** Maintains a continuous `archive.log` file tracking what was archived, when, and where it was stored.
+*   **Safe Execution:** Includes strict error handling (`set -euo pipefail`) and directory validation to prevent infinite loops or recursive archiving.
 
-To make the script available system-wide:
+---
 
+## 🚀 Quick Start Guide (For Beginners)
+
+If you are a completely new user, follow these exact steps to download, configure, and execute the tool on your Linux or macOS machine.
+
+### Step 1: Download the Project
+Open your terminal and clone the repository to your local machine using Git:
 ```bash
-sudo cp log-archive.sh /usr/local/bin/log-archive
-sudo chmod +x /usr/local/bin/log-archive
+git clone [https://github.com/nikhilraval1510/DevOps-Lab.git](https://github.com/nikhilraval1510/DevOps-Lab.git)
 ```
 
-## Usage
-
+### Step 2: Navigate to the Folder
+Change your current directory to the folder containing the script:
 ```bash
-./log-archive.sh <log-directory>
+cd "DevOps-Lab/Projects/Log Archive Tool"
 ```
 
-### Example
-
+### Step 3: Prepare the Script
+Clean up any hidden Windows-style line endings to prevent execution errors:
 ```bash
-./log-archive.sh /var/log
+sed -i 's/\r$//' log-archive.sh
+```
+Next, grant the system permission to run the file as a program:
+```bash
+chmod +x log-archive.sh
 ```
 
-Output:
+### Step 4: Execute the Tool
+Run the script by typing `./log-archive.sh` followed by the directory you want to compress. 
 
-```text
-Archive created: /home/user/archives/logs_archive_20241004_143022.tar.gz
+To test it on your system's main log folder (`/var/log`), use `sudo` to grant the necessary administrator permissions:
+```bash
+sudo ./log-archive.sh /var/log
 ```
 
-## How It Works
+### Step 5: Verify the Results
+Once the script finishes, it will automatically create an `archives/` folder. You can verify your new backup and read the audit log by running:
+```bash
+ls -ltr archives/
+cat archives/archive.log
+```
 
-1. Validates that exactly one argument is provided.
-2. Checks that the target directory exists.
-3. Creates an `archives/` directory in the current working directory if it does not exist.
-4. Compresses the entire log directory into `archives/logs_archive_<YYYYMMDD_HHMMSS>.tar.gz`.
-5. Appends a timestamped entry to `archives/archive.log` for auditing.
+---
 
 ## Archive Structure
 
+The tool automatically generates an `archives/` directory in your current working space containing your compressed logs and the audit tracker:
+
 ```text
 archives/
-  logs_archive_20241004_143022.tar.gz
-  logs_archive_20241005_020001.tar.gz
-  archive.log
+  ├── logs_archive_20260705_175620.tar.gz
+  ├── logs_archive_20260706_000000.tar.gz
+  └── archive.log
 ```
 
-The `archive.log` file contains one line per run:
-
+The `archive.log` file appends one line per successful run:
 ```text
-[2024-10-04 14:30:22] Archived '/var/log' -> '/home/user/archives/logs_archive_20241004_143022.tar.gz'
+[2026-07-05 17:56:20] Archived '/var/log' -> '/home/nikhil/DevOps-Lab/Projects/Log Archive Tool/archives/logs_archive_20260705_175620.tar.gz'
 ```
 
-## Automating with cron
+---
 
-To archive `/var/log` every night at midnight:
+## Automation with Cron (Advanced)
 
+You can automate this script to run on a set schedule using `cron`. To archive system logs without permission errors, the job must be added to the `root` user's crontab.
+
+**1. Open the root crontab:**
 ```bash
-crontab -e
+sudo crontab -e
 ```
 
-Add:
-
+**2. Add the cron job:**
+Add the following line to the bottom of the file to schedule the archive to run every night at exactly midnight. *(Note: Modify the path below to match where you cloned the repository, and ensure the path is enclosed in quotes).*
 ```text
-0 0 * * * /usr/local/bin/log-archive /var/log
+0 0 * * * "/path/to/your/DevOps-Lab/Projects/Log Archive Tool/log-archive.sh" /var/log
 ```
 
-## Notes
-
-- The script uses `set -euo pipefail` so it exits immediately on any error.
-- If the log directory contains files owned by root (e.g., `/var/log/auth.log`), run the script with `sudo`.
-
+**3. Save and Exit:** 
+The archives will now generate automatically in the background every night.
